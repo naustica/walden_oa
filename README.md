@@ -14,7 +14,7 @@ Code OA-Classification Walden: https://github.com/ourresearch/openalex-walden/bl
 
 ## Method
 
-Creating a table to reclassifiy the OA status following this approach: https://help.openalex.org/hc/en-us/articles/24347035046295-Open-Access-OA
+Creating a table to reclassify the OA status following this approach: https://help.openalex.org/hc/en-us/articles/24347035046295-Open-Access-OA
 
 ```sql
 CREATE OR REPLACE TABLE subugoe-collaborative.resources.walden_oa_articles_18_25 AS (
@@ -45,4 +45,7 @@ CREATE OR REPLACE TABLE subugoe-collaborative.resources.walden_oa_articles_18_25
 
 <figure>
     <img src="media/figure1.png" width="100%" />
+    <figcaption>
+        <b>Fig.1:</b> Open Access before and after the reclassification.
+    </figcaption>
 </figure>
