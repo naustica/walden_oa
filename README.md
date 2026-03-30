@@ -43,6 +43,37 @@ CREATE OR REPLACE TABLE subugoe-collaborative.resources.walden_oa_articles_18_25
 
 ## Result
 
+```sql
+-- before
+SELECT COUNT(DISTINCT(doi)) AS n,
+     original_oa_status AS oa_status,
+     publication_year
+FROM subugoe-collaborative.resources.walden_oa_articles_18_25
+GROUP BY publication_year, oa_status
+ORDER BY publication_year, oa_status DESC
+```
+
+```sql
+-- after
+SELECT COUNT(DISTINCT(doi)) AS n,
+     CASE
+         WHEN best_oa_location_is_oa IS NULL THEN 'closed'
+         WHEN best_oa_location_source_type='repository' THEN 'green'
+         WHEN (best_oa_location_source_is_in_doaj=TRUE OR best_oa_location_source_is_oa=TRUE) AND apc_list_value=0 THEN 'diamond'
+         WHEN (best_oa_location_source_is_in_doaj=TRUE OR best_oa_location_source_is_oa=TRUE) THEN 'gold'
+         WHEN (best_oa_location_source_is_in_doaj=FALSE AND best_oa_location_source_is_oa=FALSE)
+             AND best_oa_location_license IS NOT NULL THEN 'hybrid'
+         WHEN (best_oa_location_source_is_in_doaj=FALSE AND best_oa_location_source_is_oa=FALSE) 
+             AND best_oa_location_license IS NULL THEN 'bronze'
+         ELSE NULL
+         END
+     AS oa_status,
+     publication_year
+FROM subugoe-collaborative.resources.walden_oa_articles_18_25
+GROUP BY publication_year, oa_status
+ORDER BY publication_year, oa_status DESC
+```
+
 <figure>
     <img src="media/figure1.png" width="100%" />
     <figcaption>
