@@ -117,7 +117,7 @@ ORDER BY publication_year, oa_status DESC
 <figure>
     <img src="media/figure1_assumption_2.png" width="100%" />
     <figcaption>
-        <b>Fig.1:</b> Open Access before and after the reclassification.
+        <b>Fig.2:</b> Open Access before and after the reclassification.
     </figcaption>
 </figure>
 
