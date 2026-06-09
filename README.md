@@ -1,4 +1,4 @@
-# Open Access classification issues in Walden
+# Open Access classification issues in Walden (Snapshot: March 2026)
 
 Inconsistencies in the OA-Classification:
 
