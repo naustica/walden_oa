@@ -43,6 +43,8 @@ CREATE OR REPLACE TABLE subugoe-collaborative.resources.walden_oa_articles_18_25
 
 ## Result
 
+### Query original OA status
+
 ```sql
 -- before
 SELECT COUNT(DISTINCT(doi)) AS n,
@@ -52,6 +54,31 @@ FROM subugoe-collaborative.resources.walden_oa_articles_18_25
 GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
+
+### Assumption #1 Query: source_is_in_doaj -> Diamond OA
+
+```sql
+-- after
+SELECT COUNT(DISTINCT(doi)) AS n,
+     CASE
+         WHEN best_oa_location_is_oa IS NULL THEN 'closed'
+         WHEN best_oa_location_source_type='repository' THEN 'green'
+         WHEN best_oa_location_source_is_in_doaj=TRUE OR (best_oa_location_source_is_oa=TRUE AND apc_list_value=0) THEN 'diamond'
+         WHEN best_oa_location_source_is_oa=TRUE THEN 'gold'
+         WHEN (best_oa_location_source_is_in_doaj=FALSE AND best_oa_location_source_is_oa=FALSE)
+             AND best_oa_location_license IS NOT NULL THEN 'hybrid'
+         WHEN (best_oa_location_source_is_in_doaj=FALSE AND best_oa_location_source_is_oa=FALSE) 
+             AND best_oa_location_license IS NULL THEN 'bronze'
+         ELSE NULL
+         END
+     AS oa_status,
+     publication_year
+FROM subugoe-collaborative.resources.walden_oa_articles_18_25
+GROUP BY publication_year, oa_status
+ORDER BY publication_year, oa_status DESC
+```
+
+### Assumption #2 Query: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
 
 ```sql
 -- after
@@ -74,9 +101,24 @@ GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
 
+### Assumption #1: source_is_in_doaj -> Diamond OA
+
 <figure>
-    <img src="media/figure1.png" width="100%" />
+    <img src="media/figure1_assumption_1.png" width="100%" />
     <figcaption>
         <b>Fig.1:</b> Open Access before and after the reclassification.
     </figcaption>
 </figure>
+
+[Sankey Plot](media/figure2_assumption_1.png)
+
+### Assumption #2: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
+
+<figure>
+    <img src="media/figure1_assumption_2.png" width="100%" />
+    <figcaption>
+        <b>Fig.1:</b> Open Access before and after the reclassification.
+    </figcaption>
+</figure>
+
+[Sankey Plot](media/figure2_assumption_2.png)
