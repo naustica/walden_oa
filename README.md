@@ -16,6 +16,8 @@ Code OA-Classification Walden: https://github.com/ourresearch/openalex-walden/bl
 
 Creating a table to reclassify the OA status following this approach: https://help.openalex.org/hc/en-us/articles/24347035046295-Open-Access-OA
 
+See also: https://subugoe.github.io/scholcomm_analytics/posts/oalex_oa_status/
+
 ```sql
 CREATE OR REPLACE TABLE subugoe-collaborative.resources.walden_oa_articles_18_25 AS (
         SELECT id, 
