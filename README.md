@@ -57,7 +57,9 @@ GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
 
-### Assumption #1 Query: source_is_in_doaj -> Diamond OA
+### Query new OA status
+
+#### Assumption #1 Query: source_is_in_doaj -> Diamond OA
 
 ```sql
 -- after
@@ -80,7 +82,7 @@ GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
 
-### Assumption #2 Query: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
+#### Assumption #2 Query: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
 
 ```sql
 -- after
