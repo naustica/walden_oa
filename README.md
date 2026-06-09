@@ -59,7 +59,7 @@ ORDER BY publication_year, oa_status DESC
 
 ### Query new OA status
 
-#### Assumption #1 Query: source_is_in_doaj -> Diamond OA
+#### Assumption #1 Query: source_is_in_doaj=True AND NOT apc_list_value>0 -> Diamond OA
 
 ```sql
 -- after
@@ -67,7 +67,8 @@ SELECT COUNT(DISTINCT(doi)) AS n,
      CASE
          WHEN best_oa_location_is_oa IS NULL THEN 'closed'
          WHEN best_oa_location_source_type='repository' THEN 'green'
-         WHEN best_oa_location_source_is_in_doaj=TRUE OR (best_oa_location_source_is_oa=TRUE AND apc_list_value=0) THEN 'diamond'
+         WHEN (best_oa_location_source_is_in_doaj=TRUE AND NOT IFNULL(apc_list_value, 0)>0) 
+            OR (best_oa_location_source_is_oa=TRUE AND apc_list_value=0) THEN 'diamond'
          WHEN best_oa_location_source_is_oa=TRUE THEN 'gold'
          WHEN (best_oa_location_source_is_in_doaj=FALSE AND best_oa_location_source_is_oa=FALSE)
              AND best_oa_location_license IS NOT NULL THEN 'hybrid'
@@ -82,7 +83,7 @@ GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
 
-#### Assumption #2 Query: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
+#### Assumption #2 Query: source_is_in_doaj=True AND apc_list_value=0 -> Diamond OA
 
 ```sql
 -- after
@@ -105,7 +106,7 @@ GROUP BY publication_year, oa_status
 ORDER BY publication_year, oa_status DESC
 ```
 
-### Assumption #1: source_is_in_doaj -> Diamond OA
+### Assumption #1: source_is_in_doaj=True AND NOT apc_list_value>0 -> Diamond OA
 
 <figure>
     <img src="media/figure1_assumption_1.png" width="100%" />
@@ -116,7 +117,7 @@ ORDER BY publication_year, oa_status DESC
 
 [Sankey Plot](media/figure2_assumption_1.png)
 
-### Assumption #2: source_is_in_doaj AND apc_list_value=0 -> Diamond OA
+### Assumption #2: source_is_in_doaj=True AND apc_list_value=0 -> Diamond OA
 
 <figure>
     <img src="media/figure1_assumption_2.png" width="100%" />
